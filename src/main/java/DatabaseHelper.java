@@ -7,8 +7,8 @@ import java.sql.SQLException;
 public class DatabaseHelper {
 
     private Connection connect() {
-        // Connect to your database
-        String url = "jdbc:sqlite:/home/dahuangggg/IdeaProjects/GrowthModelDatabase.db"; // Replace with the path to your database
+        // Connect to database
+        String url = "jdbc:sqlite:/home/dahuangggg/IdeaProjects/GrowthModelDatabase.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -82,7 +82,7 @@ public class DatabaseHelper {
     public static void main(String[] args) {
         DatabaseHelper dbHelper = new DatabaseHelper();
 
-        Integer speciesID = dbHelper.getSpeciesIDByName("云杉"); // Replace with an actual species name
+        Integer speciesID = dbHelper.getSpeciesIDByName("云杉");
         if (speciesID != null) {
             dbHelper.getDataBySpeciesID(speciesID);
         }
