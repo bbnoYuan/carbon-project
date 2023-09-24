@@ -4,11 +4,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseHelper {
+public class DatabaseHelperForBiomass {
 
     private Connection connect() {
         // Connect to database
-        String url = "jdbc:sqlite:/home/dahuangggg/IdeaProjects/GrowthModelDatabase.db";
+        String url = "jdbc:sqlite:/home/dahuangggg/IdeaProjects/testdb/src/BiomassModel.db";
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -19,7 +19,7 @@ public class DatabaseHelper {
     }
 
     public Integer getSpeciesIDByName(String name) {
-        String sql = "SELECT TreeSpeciesID FROM TreeSpecies WHERE TreeSpeciesName = ?";
+        String sql = "SELECT SerialNumber FROM BiomassModel WHERE Genus = ?";  // Update the column and table names
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -28,7 +28,7 @@ public class DatabaseHelper {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("TreeSpeciesID");
+                return rs.getInt("SerialNumber");  // Update the column name
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -38,7 +38,7 @@ public class DatabaseHelper {
     }
 
     public Integer getSpeciesIDByLatinName(String latinName) {
-        String sql = "SELECT TreeSpeciesID FROM TreeSpecies WHERE LatinName = ?";
+        String sql = "SELECT SerialNumber FROM BiomassModel WHERE LatinName = ?";  // Update the column and table names
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -47,7 +47,7 @@ public class DatabaseHelper {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("TreeSpeciesID");
+                return rs.getInt("SerialNumber");  // Update the column name
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -58,7 +58,7 @@ public class DatabaseHelper {
 
 
     public void getDataBySpeciesID(int speciesID) {
-        String sql = "SELECT * FROM GrowthModel WHERE TreeSpeciesID = ?";
+        String sql = "SELECT * FROM BiomassModel WHERE SerialNumber = ?";  // Update the column and table names
 
         try (Connection conn = this.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -67,11 +67,9 @@ public class DatabaseHelper {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                // Print or process the data as per your requirement
-                System.out.println("Dependent Variable: " + rs.getString("DependentVariable"));
-                System.out.println("Model Expression: " + rs.getString("ModelExpression"));
-                System.out.println("Model Form: " + rs.getString("ModelForm"));
-                // ... (print other columns as needed)
+                System.out.println("Genus: " + rs.getString("Genus"));
+                System.out.println("Latin Name: " + rs.getString("LatinName"));
+                System.out.println("Tree Species: " + rs.getString("TreeSpecies"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -80,12 +78,11 @@ public class DatabaseHelper {
 
 
     public static void main(String[] args) {
-        DatabaseHelper dbHelper = new DatabaseHelper();
+        DatabaseHelperForGrowth dbHelper = new DatabaseHelperForGrowth();
 
-        Integer speciesID = dbHelper.getSpeciesIDByName("云杉");
+        Integer speciesID = dbHelper.getSpeciesIDByName("红松");  // Update the genus name
         if (speciesID != null) {
             dbHelper.getDataBySpeciesID(speciesID);
         }
     }
 }
-
